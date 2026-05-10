@@ -1,8 +1,0 @@
-async function runModel() {
-  const inp = getInputs();
-  
-  // Validate
-  if (!inp.periapsis || !inp.apoapsis || !inp.meanmotion) {
-    alert('Please fill in all required fields');
-    return;
-  }
