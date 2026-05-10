@@ -3,62 +3,75 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![Machine Learning](https://img.shields.io/badge/AI-RandomForest-green)
-![Space Sustainability](https://img.shields.io/badge/IEEE-AESS-orange)
-![Status](https://img.shields.io/badge/Status-Research%20Prototype-success)
+![Flask](https://img.shields.io/badge/Backend-Flask-black)
+![Deployment](https://img.shields.io/badge/Deploy-Render-success)
+![IEEE AESS](https://img.shields.io/badge/IEEE-AESS-orange)
+
+---
+
+# 🌌 Live Demo
+
+🔗 **Web Application:**  
+https://cosmic-6jw8.onrender.com
 
 ---
 
 # 📌 Project Overview
 
-**Drag Sail AI** is an AI-powered orbital sustainability project developed by **COSMIC TEAM** for the **IEEE AESS Sustainability Hackathon 2026**.
+**Drag Sail AI** is an AI-powered orbital sustainability platform developed by **COSMIC TEAM** for the **IEEE AESS Sustainability Hackathon 2026**.
 
-The project focuses on predicting:
-- 🛰️ Natural satellite deorbit time
-- ⚠️ Orbital collision risk
-- 🌌 Optimal drag sail deployment strategy
+The project predicts:
+- 🛰️ Natural orbital decay time
+- ⚠️ Space debris collision risk
+- 🌍 Sustainability impact
+- 🚀 Optimal drag sail deployment strategy
 
 using real orbital mechanics data and machine learning models.
 
-The system helps reduce the growing danger of **space debris** in Low Earth Orbit (LEO) by recommending intelligent drag sail deployment actions for satellites and debris objects.
+The goal is to support safer and cleaner Low Earth Orbit (LEO) operations through intelligent deorbit recommendations.
 
 ---
 
 # 🌍 Problem Statement
 
-Space debris is becoming one of the biggest threats to future space missions.
+Space debris is one of the fastest-growing threats to future space missions.
 
-More than:
-- **37,000+ tracked objects**
+Currently orbiting Earth:
+- **37,000+ tracked debris objects**
 - **100+ million small fragments**
+- Thousands of inactive satellites and rocket bodies
 
-currently orbit Earth at extremely high velocities.
+Even tiny debris travels at:
+- ~7–8 km/s
+- Faster than a bullet
 
-Without active mitigation:
-- Collision probability increases
-- Satellite operations become unsafe
-- Kessler Syndrome risk rises dramatically
+This creates major risks for:
+- Operational satellites
+- Space stations
+- Future launches
+- Astronaut safety
 
-Our solution introduces an intelligent AI-assisted drag sail recommendation system to accelerate safe orbital decay.
+Without mitigation, orbital congestion may trigger the **Kessler Syndrome**, where collisions generate more debris and make orbit unusable.
 
 ---
 
 # 🧠 Proposed Solution
 
-The project combines:
+Drag Sail AI combines:
 - Orbital mechanics
 - Feature engineering
 - Machine learning
-- Sustainability-focused decision logic
+- Sustainability-focused decision systems
 
 to estimate:
 
 | Output | Description |
 |---|---|
-| `natural_deorbit_years` | Estimated orbital lifetime |
-| `risk_score` | Collision & sustainability risk |
-| `risk_level` | LOW → CRITICAL |
+| `natural_deorbit_years` | Estimated natural orbital lifetime |
+| `risk_score` | Predicted orbital collision risk |
+| `risk_level` | LOW → CRITICAL classification |
 | `recommended_action` | Suggested drag sail action |
-| `sail_deorbit_years` | Lifetime after drag sail deployment |
+| `sail_deorbit_years` | Lifetime after sail deployment |
 | `years_saved` | Reduction in orbital lifetime |
 
 ---
@@ -66,17 +79,19 @@ to estimate:
 # 🛰️ System Architecture
 
 ```text
-Space-Track Dataset
-        ↓
-Orbital Feature Engineering
-        ↓
-AI Prediction Models
+Space-Track Orbital Data
+            ↓
+ Feature Engineering Layer
+            ↓
+ AI Prediction Models
  ├── Model A → Deorbit Time
  └── Model B → Risk Score
-        ↓
-Decision Engine
-        ↓
-Smart Drag Sail Recommendation
+            ↓
+ Decision Engine
+            ↓
+ Drag Sail Recommendation
+            ↓
+ Interactive GUI Dashboard
 ```
 
 ---
@@ -138,13 +153,13 @@ COSMIC/
 ## 🌌 Space & Simulation
 - Orbital Mechanics
 - MATLAB Simulation
-- TLE / Space-Track Data
-- Drag & Decay Modeling
+- Space-Track / TLE Data
+- Drag & Atmospheric Decay Modeling
 
 ## 🌐 GUI & Deployment
 - Flask
 - HTML / CSS / JavaScript
-- Render Deployment
+- Render Cloud Deployment
 
 ## 📊 Visualization
 - Matplotlib
@@ -167,15 +182,15 @@ COSMIC/
 |---|---|
 | `decay_urgency` | Measures orbital instability |
 | `bstar_log` | Atmospheric drag influence |
-| `ecc_periapsis` | Combined orbit-shape effect |
+| `ecc_periapsis` | Orbit-shape interaction |
 | `in_critical_zone` | Detects dangerous orbital regions |
-| `delta_altitude` | Orbit variation |
+| `delta_altitude` | Measures orbit variation |
 
 ---
 
 # 🛰️ Drag Sail Decision Logic
 
-| Risk Level | Action |
+| Risk Level | Recommended Action |
 |---|---|
 | LOW | MONITOR |
 | MODERATE | PREPARE |
@@ -185,23 +200,36 @@ COSMIC/
 
 The deployment percentage depends on:
 - Object type
-- Risk score
-- Orbital lifetime
+- Orbital risk
+- Atmospheric drag
 - Sustainability impact
+- Orbital lifetime
 
 ---
 
-# 🧪 Simulation
+# 🧪 Simulation Features
 
 The project includes:
-- Orbital decay simulations
-- MATLAB-based re-entry visualization
+- Orbital decay simulation
 - Drag sail deployment modeling
-- Satellite burn-up animation
+- Satellite re-entry visualization
+- MATLAB orbital animation
+- Burn-up and disappearance simulation
 
 ---
 
-# ▶️ How to Run the Project
+# 💻 Interactive GUI
+
+The deployed web application allows users to:
+- Enter TLE-derived orbital parameters
+- Analyze orbital risk instantly
+- Predict deorbit lifetime
+- Receive drag sail recommendations
+- Visualize sustainability impact
+
+---
+
+# ▶️ How to Run Locally
 
 ## 1️⃣ Clone Repository
 
@@ -212,7 +240,7 @@ cd COSMIC
 
 ---
 
-## 2️⃣ Install Requirements
+## 2️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -220,13 +248,15 @@ pip install -r requirements.txt
 
 ---
 
-## 3️⃣ Run Flask GUI
+## 3️⃣ Run Flask Application
 
 ```bash
 python app.py
 ```
 
-Then open:
+---
+
+## 4️⃣ Open Browser
 
 ```text
 http://127.0.0.1:5000
@@ -239,11 +269,13 @@ http://127.0.0.1:5000
 ```python
 {
     "PERIAPSIS": 700,
-    "APOAPSIS": 720,
-    "BSTAR": 0.00012,
-    "ECCENTRICITY": 0.002,
-    "MEAN_MOTION": 14.8,
-    "MEAN_MOTION_DOT": 0.00008,
+    "APOAPSIS": 824,
+    "BSTAR": 0.000083,
+    "ECCENTRICITY": 0.00852,
+    "MEAN_MOTION": 14.62,
+    "MEAN_MOTION_DOT": 0.00000218,
+    "INCLINATION": 98.76,
+    "PERIOD": 98.5,
     "OBJECT_TYPE": "DEBRIS",
     "RCS_SIZE": "MEDIUM"
 }
@@ -274,37 +306,41 @@ http://127.0.0.1:5000
 | Natural Decay | 25+ years |
 | With Drag Sail | ~3.4 years |
 
-The proposed solution significantly reduces orbital congestion and improves long-term space sustainability.
+The proposed system significantly reduces:
+- Orbital congestion
+- Long-term debris accumulation
+- Satellite collision exposure
+- Future sustainability risks
 
 ---
 
 # ⚠️ Assumptions & Limitations
 
-- Current models are trained primarily on LEO objects.
-- Atmospheric density variations are simplified.
-- Risk score is AI-estimated and not an official aerospace safety metric.
+- Models are focused mainly on Low Earth Orbit (LEO).
+- Atmospheric density changes are simplified.
 - Solar activity effects are approximated.
-- Simulation outputs are research-oriented and not flight-certified.
+- Predictions are research-oriented and not flight-certified.
+- Risk scores are AI-estimated values and not official aerospace safety metrics.
 
 ---
 
 # 🤖 AI Usage Disclosure
 
-This project used AI-assisted tools during:
+AI-assisted tools were used for:
+- Documentation drafting
 - Research organization
-- README drafting
-- Documentation refinement
+- README refinement
 - GUI planning assistance
-- Feature engineering discussions
+- Presentation structuring
 
 However:
-- All orbital logic
-- Model training
+- Model development
+- Orbital calculations
 - Feature engineering
-- Sustainability analysis
-- Final validation
+- Decision logic
+- Validation and testing
 
-were reviewed, modified, and validated manually by the COSMIC TEAM.
+were manually reviewed and validated by the COSMIC TEAM.
 
 ---
 
@@ -323,7 +359,7 @@ were reviewed, modified, and validated manually by the COSMIC TEAM.
 
 - NASA Orbital Debris Program
 - Space-Track.org
-- IADC Space Debris Guidelines
+- IADC Space Debris Mitigation Guidelines
 - Orbital Mechanics for Engineering Students
 - IEEE AESS Sustainability References
 
