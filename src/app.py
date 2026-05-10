@@ -54,14 +54,39 @@ def predict():
         # Predict using loaded .pkl models
         nat_years = float(np.clip(loaded_nat.predict(features)[0], 0.01, 100))
         risk_raw = float(np.clip(loaded_risk.predict(features)[0], 0, 100))
-        
-        # Apply the sail logic natively in the frontend to keep it interactive
-        # Or we can return the exact numbers here
+        risk_score = round(risk_raw, 1)
+
+        # Risk level
+        if   risk_score >= 80: risk_level = 'CRITICAL'
+        elif risk_score >= 60: risk_level = 'HIGH'
+        elif risk_score >= 45: risk_level = 'ELEVATED'
+        elif risk_score >= 25: risk_level = 'MODERATE'
+        else:                  risk_level = 'LOW'
+
+        # Sail recommendation
+        rcssize = str(data.get('rcssize', 'MEDIUM'))
+        object_type = str(data.get('objtype', 'DEBRIS'))
+        is_payload = (object_type == 'PAYLOAD')
+        mult = {'LARGE':6, 'MEDIUM':12, 'SMALL':20}.get(rcssize, 10)
+
+        if   risk_score < 25: pct, action = 0,   'MONITOR'
+        elif risk_score < 45: pct, action = (10 if is_payload else 20),  'PREPARE'
+        elif risk_score < 60: pct, action = (30 if is_payload else 50),  'DEPLOY_PARTIAL'
+        elif risk_score < 80: pct, action = (60 if is_payload else 80),  'DEPLOY_HIGH'
+        else:                 pct, action = 100, 'DEPLOY_FULL'
+
+        sail_mult  = 1 + (mult - 1) * (pct / 100) if pct > 0 else 1
+        sail_years = round(nat_years / sail_mult, 2)
+
         return jsonify({
             'success': True,
-            'natural_deorbit_years': nat_years,
-            'risk_score': risk_raw,
-            'features_used': FEATURE_ORDER
+            'natural_deorbit_years': round(nat_years, 2),
+            'risk_score': risk_score,
+            'risk_level': risk_level,
+            'sail_deployment_pct': pct,
+            'action': action,
+            'sail_deorbit_years': sail_years,
+            'years_saved': round(nat_years - sail_years, 2)
         })
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 400

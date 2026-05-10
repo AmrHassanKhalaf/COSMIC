@@ -6,12 +6,12 @@
   "n_test": 2620,
   "n_total": 13099,
   "selected_features": [
-    "decay_urgency",
     "PERIAPSIS",
-    "bstar_log",
+    "APOAPSIS",
+    "BSTAR",
     "ECCENTRICITY",
-    "delta_altitude",
-    "ecc_periapsis"
+    "MEAN_MOTION",
+    "MEAN_MOTION_DOT"
   ],
   "label_encoders": {
     "OBJECT_TYPE": [
