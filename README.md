@@ -29,7 +29,9 @@ The project predicts:
 using real orbital mechanics data and machine learning models.
 
 The goal is to support safer and cleaner Low Earth Orbit (LEO) operations through intelligent deorbit recommendations.
-
+📽️ **Concept & Scientific Background Video**  
+This video explains the drag sail concept and the scientific principles behind orbital decay mitigation:
+https://youtu.be/KCerhGYlgAQ?si=nAEHAt0NcqbgsJ7e
 ---
 
 # 🌍 Problem Statement
