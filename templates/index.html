@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag Sail AI — Orbital Risk Assessment</title>
+  <meta name="description" content="AI-powered orbital debris risk assessment and drag sail deployment recommendation system">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Star field canvas -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">🛸</div>
+        <div class="logo-text">
+          <h1>DRAG SAIL AI</h1>
+          <p>Orbital Deorbit Decision System</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <div class="status-pill">
+          <span class="pulse-dot"></span>Models Online
+        </div>
+        <div class="model-stats">
+          <span title="Natural Deorbit Model R²">R² 0.9935</span>
+          <span class="sep">·</span>
+          <span title="Risk Score Model R²">R² 0.9701</span>
+          <span class="sep">·</span>
+          <span>13,099 objects</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+    <div class="app-grid">
+
+      <!-- ════════ LEFT — INPUT PANEL ════════ -->
+      <section class="card input-card">
+        <div class="card-header">
+          <h2>Orbital Parameters</h2>
+          <p>Enter TLE-derived parameters for analysis</p>
+        </div>
+
+        <!-- Presets -->
+        <div class="presets-row">
+          <span class="presets-label">Examples:</span>
+          <button class="preset-btn" data-preset="critical">Critical Debris</button>
+          <button class="preset-btn" data-preset="payload">Active Payload</button>
+          <button class="preset-btn" data-preset="rocket">Rocket Body</button>
+          <button class="preset-btn" data-preset="low">Low Risk</button>
+        </div>
+
+        <form id="predict-form" novalidate>
+          <div class="form-grid">
+
+            <div class="field">
+              <label for="periapsis">Periapsis <em>km</em></label>
+              <input id="periapsis" type="number" step="0.1" placeholder="702.7" required>
+              <span class="field-hint">Closest point to Earth</span>
+            </div>
+
+            <div class="field">
+              <label for="apoapsis">Apoapsis <em>km</em></label>
+              <input id="apoapsis" type="number" step="0.1" placeholder="824.4" required>
+              <span class="field-hint">Farthest point from Earth</span>
+            </div>
+
+            <div class="field">
+              <label for="bstar">BSTAR <em>drag term</em></label>
+              <input id="bstar" type="number" step="any" placeholder="0.000083" required>
+              <span class="field-hint">Atmospheric drag coefficient</span>
+            </div>
+
+            <div class="field">
+              <label for="eccentricity">Eccentricity</label>
+              <input id="eccentricity" type="number" step="any" min="0" max="1" placeholder="0.00852" required>
+              <span class="field-hint">Orbit shape (0 = circular)</span>
+            </div>
+
+            <div class="field">
+              <label for="mean_motion">Mean Motion <em>rev/day</em></label>
+              <input id="mean_motion" type="number" step="0.01" placeholder="14.62" required>
+              <span class="field-hint">Orbital revolutions per day</span>
+            </div>
+
+            <div class="field">
+              <label for="mean_motion_dot">Mean Motion Dot <em>rev/day²</em></label>
+              <input id="mean_motion_dot" type="number" step="any" placeholder="0.00000218" required>
+              <span class="field-hint">Rate of orbital decay</span>
+            </div>
+
+            <div class="field">
+              <label for="inclination">Inclination <em>deg</em></label>
+              <input id="inclination" type="number" step="0.01" min="0" max="180" placeholder="98.76" required>
+              <span class="field-hint">Orbital tilt angle</span>
+            </div>
+
+            <div class="field">
+              <label for="period">Period <em>min</em></label>
+              <input id="period" type="number" step="0.1" placeholder="98.5" required>
+              <span class="field-hint">Time for one full orbit</span>
+            </div>
+
+            <div class="field">
+              <label for="object_type">Object Type</label>
+              <select id="object_type" required>
+                <option value="">Select type…</option>
+                <option value="DEBRIS">DEBRIS</option>
+                <option value="PAYLOAD">PAYLOAD</option>
+                <option value="ROCKET BODY">ROCKET BODY</option>
+                <option value="TBA">TBA</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="rcs_size">RCS Size</label>
+              <select id="rcs_size" required>
+                <option value="">Select size…</option>
+                <option value="SMALL">SMALL (&lt; 0.1 m²)</option>
+                <option value="MEDIUM">MEDIUM (0.1–1 m²)</option>
+                <option value="LARGE">LARGE (&gt; 1 m²)</option>
+              </select>
+            </div>
+
+          </div><!-- /form-grid -->
+
+          <button type="submit" class="analyze-btn" id="analyze-btn">
+            <span class="btn-icon">⚡</span>
+            <span class="btn-text">Analyze Risk</span>
+            <span class="btn-loader" id="btn-loader" style="display:none">
+              <span class="spinner"></span>
+            </span>
+          </button>
+        </form>
+      </section><!-- /input-card -->
+
+      <!-- ════════ RIGHT — RESULTS PANEL ════════ -->
+      <section class="card results-card" id="results-card">
+
+        <!-- Empty state -->
+        <div class="results-empty" id="results-empty">
+          <div class="empty-icon">🛰️</div>
+          <h3>Awaiting Analysis</h3>
+          <p>Enter orbital parameters on the left and click <strong>Analyze Risk</strong></p>
+        </div>
+
+        <!-- Error state -->
+        <div class="results-error" id="results-error" style="display:none">
+          <div class="empty-icon">⚠️</div>
+          <h3>Analysis Failed</h3>
+          <p id="error-msg"></p>
+        </div>
+
+        <!-- Results -->
+        <div class="results-body" id="results-body" style="display:none">
+
+          <!-- Top row: Gauge + Action -->
+          <div class="top-row">
+
+            <!-- Circular Risk Gauge -->
+            <div class="gauge-wrap">
+              <svg viewBox="0 0 220 220" class="gauge-svg" aria-label="Risk Score Gauge">
+                <defs>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                </defs>
+                <!-- Track -->
+                <circle cx="110" cy="110" r="90" fill="none"
+                        stroke="rgba(255,255,255,0.06)" stroke-width="14"/>
+                <!-- Progress -->
+                <circle id="gauge-arc" cx="110" cy="110" r="90" fill="none"
+                        stroke="#00e5ff" stroke-width="14" stroke-linecap="round"
+                        stroke-dasharray="565.5" stroke-dashoffset="565.5"
+                        transform="rotate(-90 110 110)"
+                        filter="url(#glow)" class="gauge-arc"/>
+                <!-- Score text -->
+                <text id="gauge-number" x="110" y="100" text-anchor="middle"
+                      class="gauge-number">--</text>
+                <text x="110" y="125" text-anchor="middle" class="gauge-sub">RISK SCORE</text>
+              </svg>
+              <div id="risk-level-badge" class="risk-badge level-low">---</div>
+            </div>
+
+            <!-- Action + quick stats -->
+            <div class="action-column">
+              <div class="label-sm">Recommended Action</div>
+              <div id="action-badge" class="action-badge">---</div>
+
+              <div class="quick-stats">
+                <div class="qs-item">
+                  <div class="qs-label">Object Type</div>
+                  <div id="qs-type" class="qs-value">---</div>
+                </div>
+                <div class="qs-item">
+                  <div class="qs-label">Altitude Zone</div>
+                  <div id="qs-zone" class="qs-value">---</div>
+                </div>
+                <div class="qs-item">
+                  <div class="qs-label">RCS Size</div>
+                  <div id="qs-rcs" class="qs-value">---</div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /top-row -->
+
+          <!-- Deorbit Timeline -->
+          <div class="section-label">Deorbit Projection</div>
+          <div class="timeline-row">
+            <div class="timeline-card card-natural">
+              <div class="tc-icon">🌍</div>
+              <div class="tc-label">Without Sail</div>
+              <div class="tc-years">
+                <span id="nat-years" class="tc-number">--</span>
+                <span class="tc-unit">yrs</span>
+              </div>
+            </div>
+
+            <div class="timeline-arrow-wrap">
+              <div class="arrow-line"></div>
+              <div class="arrow-head">→</div>
+              <div id="savings-tag" class="savings-tag">saves -- yrs</div>
+            </div>
+
+            <div class="timeline-card card-sail">
+              <div class="tc-icon">🪂</div>
+              <div class="tc-label">With Drag Sail</div>
+              <div class="tc-years">
+                <span id="sail-years" class="tc-number">--</span>
+                <span class="tc-unit">yrs</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sail Deployment Bar -->
+          <div class="section-label">Drag Sail Deployment Level</div>
+          <div class="deploy-bar-wrap">
+            <div class="deploy-header">
+              <span id="deploy-action-label" class="deploy-action">---</span>
+              <span id="deploy-pct-label" class="deploy-pct">-- %</span>
+            </div>
+            <div class="deploy-track">
+              <div id="deploy-fill" class="deploy-fill" style="width:0%"></div>
+              <div class="deploy-markers">
+                <span style="left:0%">0%</span>
+                <span style="left:20%">20%</span>
+                <span style="left:50%">50%</span>
+                <span style="left:80%">80%</span>
+                <span style="left:100%">100%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Risk Breakdown -->
+          <div class="section-label">Risk Summary</div>
+          <div class="risk-summary">
+            <div class="rs-row">
+              <span class="rs-key">Natural Lifetime</span>
+              <span id="rs-nat" class="rs-val">--</span>
+            </div>
+            <div class="rs-row">
+              <span class="rs-key">Risk Score</span>
+              <span id="rs-score" class="rs-val">--</span>
+            </div>
+            <div class="rs-row">
+              <span class="rs-key">Risk Level</span>
+              <span id="rs-level" class="rs-val">--</span>
+            </div>
+            <div class="rs-row">
+              <span class="rs-key">Sail Deployment</span>
+              <span id="rs-deploy" class="rs-val">--</span>
+            </div>
+            <div class="rs-row">
+              <span class="rs-key">Accelerated Deorbit</span>
+              <span id="rs-sail" class="rs-val">--</span>
+            </div>
+            <div class="rs-row highlight">
+              <span class="rs-key">Years Saved</span>
+              <span id="rs-saved" class="rs-val">--</span>
+            </div>
+          </div>
+
+        </div><!-- /results-body -->
+      </section><!-- /results-card -->
+
+    </div><!-- /app-grid -->
+  </main>
+
+  <footer class="footer">
+    Drag Sail AI · Powered by Random Forest (R² 0.9935) · IADC-calibrated physics targets
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
