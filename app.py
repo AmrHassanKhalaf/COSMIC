@@ -11,7 +11,7 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
 # ── Model paths ───────────────────────────────────────────────────────────────
-MODEL_DIR = os.path.join(os.path.dirname(__file__), 'src', 'drag_sail_models')
+MODEL_DIR = os.path.join(os.path.dirname(__file__), 'src', 'models')
 
 # ── Load models once at startup ───────────────────────────────────────────────
 def _load():
