@@ -1,0 +1,7 @@
+Sample Output for Drag Sail AI Analysis
+=======================================
+
+1. Average Risk Score: 45.29/100
+2. Baseline deorbit time: > 25 years
+3. Drag Sail deorbit time: ~ 4.2 years
+Status: Analysis complete. All parameters nominal.
