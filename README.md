@@ -20,20 +20,24 @@ https://cosmic-6jw8.onrender.com
 
 **Drag Sail AI** is an AI-powered orbital sustainability platform developed by **COSMIC TEAM** for the **IEEE AESS Sustainability Hackathon 2026**.
 
-The project predicts:
+The platform analyzes orbital mechanics data and machine learning predictions to estimate:
+
 - 🛰️ Natural orbital decay time
 - ⚠️ Space debris collision risk
 - 🌍 Sustainability impact
 - 🚀 Optimal drag sail deployment strategy
 
-using real orbital mechanics data and machine learning models.
+The system aims to support safer and cleaner **Low Earth Orbit (LEO)** operations through intelligent and sustainable deorbit recommendations.
 
-The goal is to support safer and cleaner Low Earth Orbit (LEO) operations through intelligent deorbit recommendations.
-📽️ **Concept & Scientific Background Video**  
-This video explains the drag sail concept and the scientific principles behind orbital decay mitigation:
-https://youtu.be/KCerhGYlgAQ?si=nAEHAt0NcqbgsJ7e
 ---
 
+## 📽️ Concept & Scientific Background
+
+This video explains the drag sail concept and the scientific principles behind orbital decay mitigation:
+
+▶️ https://youtu.be/KCerhGYlgAQ?si=nAEHAt0NcqbgsJ7e
+
+---
 # 🌍 Problem Statement
 
 Space debris is one of the fastest-growing threats to future space missions.
